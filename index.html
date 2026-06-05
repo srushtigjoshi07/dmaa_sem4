@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hybrid SQL-MongoDB Production Monitor | Srushti G Joshi</title>
+    <title>Hybrid SQL-MongoDB Monitor | Srushti G Joshi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,600 +14,858 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-            color: #e0e4ff;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #f0f0f0;
+            overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1f3a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 5px;
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f23 100%);
         }
 
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.03) 0%, transparent 70%);
+            animation: rotateBg 40s linear infinite;
+        }
+
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Container */
         .container {
             max-width: 1300px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px 24px 60px;
+            position: relative;
         }
 
-        /* Header Styles */
+        /* Header */
         .header {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
             text-align: center;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 50px 30px;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge-icon {
+            display: inline-block;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            border-radius: 50px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #00ffaa);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 15px;
+            animation: gradientShift 5s ease infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .subtitle {
-            color: #00ffaa;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+            color: #8888bb;
+            font-size: 1rem;
+            letter-spacing: 1px;
         }
 
         .student-info {
             display: flex;
             justify-content: center;
-            gap: 40px;
             flex-wrap: wrap;
-            padding: 15px;
+            gap: 32px;
+            margin-top: 32px;
+            padding: 20px 30px;
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
-            margin-top: 15px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .student-info span {
-            font-family: monospace;
-            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #ccccee;
+        }
+
+        .student-info i {
+            color: #00ffff;
+            font-size: 1.1rem;
         }
 
         .student-info strong {
-            color: #00ffff;
+            color: #00ffaa;
+            font-weight: 600;
         }
 
-        /* Section Styles */
+        /* Sections */
         .section {
-            background: rgba(15, 20, 40, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(0, 255, 255, 0.15);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: rgba(15, 20, 35, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
             border-color: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 255, 0.05);
         }
 
         .section-title {
             font-size: 1.8rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #00ffff;
-            display: inline-block;
-            color: #00ffff;
+            font-weight: 600;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .section-content {
-            margin-top: 20px;
+        .section-title i {
+            color: #00ffff;
+            font-size: 1.8rem;
+        }
+
+        .title-underline {
+            height: 3px;
+            width: 60px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            margin-top: 8px;
+            border-radius: 3px;
         }
 
         /* Block Diagram */
         .block-diagram {
-            background: #0a0e22;
-            border-radius: 15px;
-            padding: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 28px;
+            padding: 40px;
             text-align: center;
-        }
-
-        .diagram-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin: 15px 0;
         }
 
         .diagram-box {
-            background: linear-gradient(135deg, #1a1f3a, #0a0e22);
-            border: 2px solid #00ffff;
-            border-radius: 12px;
-            padding: 15px 25px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(255, 0, 255, 0.05));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 18px 28px;
             margin: 10px;
-            min-width: 180px;
-            text-align: center;
-            font-weight: bold;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
-        .diagram-arrow {
-            font-size: 2rem;
+        .diagram-box:hover {
+            transform: scale(1.02);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .arrow-down {
+            font-size: 28px;
             color: #00ffff;
-            margin: 0 10px;
+            margin: 12px 0;
+            animation: bounce 2s infinite;
         }
 
-        .diagram-split {
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        .split-container {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
+            flex-wrap: wrap;
             margin: 20px 0;
-        }
-
-        .db-box {
-            background: rgba(0, 255, 255, 0.1);
-            border: 2px solid #ff00ff;
-            border-radius: 12px;
-            padding: 15px 30px;
         }
 
         /* Software Grid */
         .software-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
         }
 
-        .software-item {
-            background: rgba(0, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 12px;
+        .software-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 18px 12px;
             text-align: center;
-            font-family: monospace;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .software-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .software-card i {
+            font-size: 2rem;
+            color: #00ffff;
+            margin-bottom: 12px;
         }
 
         /* Methodology Steps */
-        .methodology-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         .step {
             background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
             border-left: 4px solid #00ffff;
-            padding: 15px 20px;
-            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .step:hover {
+            transform: translateX(8px);
+            background: rgba(0, 255, 255, 0.05);
         }
 
         .step-number {
-            color: #00ffff;
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00ffff, #0099ff);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin-right: 15px;
+            margin-right: 16px;
+            font-size: 0.9rem;
         }
 
         /* Flowchart */
         .flowchart {
-            background: #0a0e22;
-            border-radius: 15px;
-            padding: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 28px;
+            padding: 40px;
             text-align: center;
         }
 
         .flow-node {
-            background: linear-gradient(135deg, #1a1f3a, #0a0e22);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            padding: 12px 20px;
-            margin: 10px auto;
+            background: linear-gradient(135deg, #1a1a2e, #0f0f23);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 40px;
+            padding: 14px 28px;
             display: inline-block;
-            min-width: 250px;
-        }
-
-        .flow-arrow {
-            font-size: 1.5rem;
-            color: #00ffff;
-            margin: 5px 0;
+            margin: 8px;
+            font-weight: 500;
         }
 
         /* Algorithm */
         .algorithm {
-            background: #0a0e22;
-            border-radius: 15px;
-            padding: 25px;
-            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            padding: 32px;
+            font-family: 'Inter', monospace;
         }
 
         .algorithm ol {
-            margin-left: 25px;
+            margin-left: 24px;
         }
 
         .algorithm li {
-            margin: 12px 0;
-            line-height: 1.5;
+            margin: 16px 0;
+            line-height: 1.6;
+        }
+
+        .algorithm code {
+            background: rgba(0, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-family: monospace;
+            color: #00ffaa;
         }
 
         /* Results Table */
         .results-table {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        .results-table th, .results-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #2a2e4a;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 24px 0;
         }
 
         .results-table th {
-            background: rgba(0, 255, 255, 0.2);
-            color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 16px;
+            text-align: left;
+            border-radius: 16px 16px 0 0;
+            font-weight: 600;
         }
 
-        .kpi-highlight {
+        .results-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .kpi-value {
             color: #00ffaa;
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
-        /* Applications Grid */
+        /* Apps Grid */
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
         }
 
         .app-card {
-            background: rgba(0, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: all 0.4s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .app-card:hover {
+            transform: translateY(-8px);
+            border-color: #ff00ff;
+            box-shadow: 0 20px 30px -15px rgba(255, 0, 255, 0.2);
+        }
+
+        .app-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        /* Future Grid */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .future-item {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.05), rgba(0, 255, 255, 0.02));
+            border-radius: 20px;
+            padding: 22px;
+            border-left: 3px solid #ff00ff;
+            transition: all 0.3s;
+        }
+
+        .future-item:hover {
+            transform: translateX(6px);
+            background: rgba(255, 0, 255, 0.08);
+        }
+
+        /* Conclusion */
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(255, 0, 255, 0.05));
+            border-radius: 28px;
+            padding: 40px;
             text-align: center;
             border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
-        .app-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        /* Future Scope */
-        .future-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .future-item {
-            background: rgba(255, 0, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-            border-left: 3px solid #ff00ff;
-        }
-
-        /* Conclusion */
-        .conclusion-box {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid #00ffff;
+        .stats-badge {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 40px;
+            padding: 8px 20px;
+            margin: 8px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
         /* Footer */
         .footer {
             text-align: center;
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            margin-top: 20px;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Scroll Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 16px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .section {
+                padding: 24px;
             }
             .section-title {
                 font-size: 1.4rem;
             }
-            .diagram-arrow {
-                display: block;
-                margin: 5px 0;
-                transform: rotate(90deg);
+            .student-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                border-radius: 28px;
             }
-            .diagram-split {
+            .split-container {
                 flex-direction: column;
                 align-items: center;
             }
-            .student-info {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
+            .arrow-down {
+                transform: rotate(90deg);
             }
         }
 
-        /* Badge */
-        .badge {
-            display: inline-block;
-            background: rgba(0, 255, 255, 0.2);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-right: 10px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            border-radius: 10px;
         }
 
-        /* Code Block */
-        code {
-            background: #0a0e22;
-            padding: 2px 6px;
-            border-radius: 5px;
-            font-family: monospace;
-            color: #00ffaa;
+        /* Glowing Text */
+        .glow {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
     <div class="container">
-        <!-- Header with Student Details -->
+        <!-- Header -->
         <div class="header">
-            <h1>🏭 Hybrid SQL–MongoDB Production Monitoring System</h1>
+            <div class="badge-icon">
+                <i class="fas fa-microchip"></i> INDUSTRY 4.0 READY
+            </div>
+            <h1>Hybrid SQL–MongoDB<br>Production Monitoring System</h1>
             <div class="subtitle">Industrial Analytics & Downtime Prediction Platform</div>
             <div class="student-info">
-                <span>👩‍🎓 <strong>Name:</strong> Srushti G Joshi</span>
-                <span>🏛️ <strong>Department:</strong> Automation and Robotics</span>
-                <span>📚 <strong>Course:</strong> Data Management and Analysis</span>
-                <span>🆔 <strong>USN:</strong> 01FE24BAR014</span>
+                <span><i class="fas fa-user-graduate"></i> <strong>Srushti G Joshi</strong></span>
+                <span><i class="fas fa-robot"></i> <strong>Automation and Robotics</strong></span>
+                <span><i class="fas fa-database"></i> <strong>Data Management and Analysis</strong></span>
+                <span><i class="fas fa-id-card"></i> <strong>01FE24BAR014</strong></span>
             </div>
         </div>
 
         <!-- 1. Title -->
-        <div class="section">
-            <h2 class="section-title">📌 1. Title</h2>
-            <div class="section-content">
-                <p style="font-size: 1.3rem; font-weight: bold; text-align: center; color: #00ffaa;">
+        <div class="section" id="sec1">
+            <div class="section-title">
+                <i class="fas fa-tag"></i>
+                <span>Title</span>
+            </div>
+            <div class="title-underline"></div>
+            <div class="section-content" style="margin-top: 24px;">
+                <p style="font-size: 1.4rem; font-weight: 500; text-align: center; background: linear-gradient(135deg, #fff, #00ffaa); -webkit-background-clip: text; background-clip: text; color: transparent;">
                     "Hybrid Telemetry Harvester: A SQL–MongoDB Production Monitoring System for Industrial Analytics and Downtime Prediction"
                 </p>
             </div>
         </div>
 
         <!-- 2. Abstract -->
-        <div class="section">
-            <h2 class="section-title">📄 2. Abstract</h2>
-            <div class="section-content">
-                <p>This project presents a <strong>dual-database architecture</strong> for production monitoring. Structured machine production data (shift outputs, good/scrap units, pressure metrics) is stored in a <strong>relational SQL database</strong>, while real-time sensor fault logs and schemaless telemetry drift signals are ingested into <strong>MongoDB</strong>. A web-based dashboard visualizes key performance indicators (KPIs), live sensor telemetry, and downtime forecasts. The system enables industrial analytics, active alarm tracking, and breakdown risk assessment, achieving a <strong>Global OEE Index of 98.52%</strong> in the deployed prototype.</p>
+        <div class="section" id="sec2">
+            <div class="section-title">
+                <i class="fas fa-file-alt"></i>
+                <span>Abstract</span>
+            </div>
+            <div class="title-underline"></div>
+            <div class="section-content" style="margin-top: 24px;">
+                <p style="line-height: 1.8;">This project presents a <strong style="color: #00ffff;">dual-database architecture</strong> for production monitoring. Structured machine production data (shift outputs, good/scrap units, pressure metrics) is stored in a <strong style="color: #00ffff;">relational SQL database</strong>, while real-time sensor fault logs and schemaless telemetry drift signals are ingested into <strong style="color: #ff00ff;">MongoDB</strong>. A web-based dashboard visualizes key performance indicators (KPIs), live sensor telemetry, and downtime forecasts. The system enables industrial analytics, active alarm tracking, and breakdown risk assessment, achieving a <strong style="color: #00ffaa;">Global OEE Index of 98.52%</strong> in the deployed prototype.</p>
             </div>
         </div>
 
         <!-- 3. Problem Statement -->
-        <div class="section">
-            <h2 class="section-title">⚠️ 3. Problem Statement</h2>
-            <div class="section-content">
+        <div class="section" id="sec3">
+            <div class="section-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Problem Statement</span>
+            </div>
+            <div class="title-underline"></div>
+            <div class="section-content" style="margin-top: 24px;">
                 <p>Modern industrial environments generate <strong>heterogeneous data</strong>: structured shift reports and semi-structured sensor fault logs. Storing both in a single database type leads to inefficiency—relational systems struggle with variable schemas (fault signatures), while document stores lack robust aggregation for production metrics.</p>
-                <br>
-                <p><strong>Key Challenges:</strong></p>
-                <ul style="margin-left: 30px; margin-top: 10px;">
-                    <li>Store <strong>structured production history</strong> in SQL (good units, scrap, piston pressure)</li>
-                    <li>Store <strong>real-time sensor fault logs</strong> in MongoDB (variable fields, component-wise alerts)</li>
-                    <li>Provide a unified dashboard for <strong>downtime prediction</strong> and <strong>operational visibility</strong></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 4. Objectives -->
-        <div class="section">
-            <h2 class="section-title">🎯 4. Objectives</h2>
-            <div class="section-content">
-                <ul style="margin-left: 25px;">
-                    <li>Design and implement a <strong>dual-database connector</strong> that routes SCADA telemetry to SQL and MongoDB</li>
-                    <li>Build a <strong>web dashboard</strong> showing total relational logs, document logs, active alarms, and Global OEE Index</li>
-                    <li>Implement <strong>Downtime Forecast Analyzer</strong> with breakdown risk percentage and cutoff window</li>
-                    <li>Create <strong>Live Sensor Telemetry Rig</strong> with manual override capability</li>
-                    <li>Display <strong>SQL table</strong> (production_history) and <strong>MongoDB collection</strong> (fault_logs)</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 5. Block Diagram -->
-        <div class="section">
-            <h2 class="section-title">📊 5. Block Diagram</h2>
-            <div class="section-content">
-                <div class="block-diagram">
-                    <div class="diagram-row">
-                        <div class="diagram-box">🏭 SCADA Telemetry Sources</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 28px;">
+                    <div style="flex:1; background: rgba(0,255,255,0.03); border-radius: 20px; padding: 20px;">
+                        <i class="fas fa-database" style="color: #00ffff; font-size: 1.5rem;"></i>
+                        <p style="margin-top: 12px;"><strong>SQL Challenge</strong><br>Struggles with variable fault schemas</p>
                     </div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="diagram-row">
-                        <div class="diagram-box">🔄 Hybrid Data Router</div>
+                    <div style="flex:1; background: rgba(255,0,255,0.03); border-radius: 20px; padding: 20px;">
+                        <i class="fas fa-leaf" style="color: #ff00ff; font-size: 1.5rem;"></i>
+                        <p style="margin-top: 12px;"><strong>MongoDB Challenge</strong><br>Lacks robust production aggregation</p>
                     </div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="diagram-split">
-                        <div class="db-box">🗄️ SQL Database<br><small>production_history</small></div>
-                        <div class="db-box">📄 MongoDB<br><small>fault_logs (schemaless)</small></div>
-                    </div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="diagram-row">
-                        <div class="diagram-box">📊 Web Dashboard - KPIs & Visualizations</div>
-                    </div>
-                    <div class="diagram-split">
-                        <div class="db-box" style="border-color: #00ffaa;">📈 Global OEE Index</div>
-                        <div class="db-box" style="border-color: #ffaa00;">🔮 Downtime Forecast</div>
-                        <div class="db-box" style="border-color: #ff00ff;">📡 Live Telemetry</div>
+                    <div style="flex:1; background: rgba(0,255,255,0.03); border-radius: 20px; padding: 20px;">
+                        <i class="fas fa-chart-line" style="color: #00ffaa; font-size: 1.5rem;"></i>
+                        <p style="margin-top: 12px;"><strong>Need</strong><br>Unified downtime prediction dashboard</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 7. Software Requirements (Replacing Hardware) -->
-        <div class="section">
-            <h2 class="section-title">💻 7. Software Requirements</h2>
+        <!-- 4. Objectives -->
+        <div class="section" id="sec4">
+            <div class="section-title">
+                <i class="fas fa-bullseye"></i>
+                <span>Objectives</span>
+            </div>
+            <div class="title-underline"></div>
+            <div class="section-content" style="margin-top: 24px;">
+                <div style="display: grid; gap: 14px;">
+                    <div style="display: flex; align-items: center; gap: 14px;"><i class="fas fa-check-circle" style="color: #00ffaa;"></i> Design dual-database connector for SCADA telemetry</div>
+                    <div style="display: flex; align-items: center; gap: 14px;"><i class="fas fa-check-circle" style="color: #00ffaa;"></i> Build web dashboard with KPIs and real-time metrics</div>
+                    <div style="display: flex; align-items: center; gap: 14px;"><i class="fas fa-check-circle" style="color: #00ffaa;"></i> Implement Downtime Forecast Analyzer with risk prediction</div>
+                    <div style="display: flex; align-items: center; gap: 14px;"><i class="fas fa-check-circle" style="color: #00ffaa;"></i> Create Live Sensor Telemetry Rig with manual override</div>
+                    <div style="display: flex; align-items: center; gap: 14px;"><i class="fas fa-check-circle" style="color: #00ffaa;"></i> Display SQL production_history and MongoDB fault_logs</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Block Diagram -->
+        <div class="section" id="sec5">
+            <div class="section-title">
+                <i class="fas fa-project-diagram"></i>
+                <span>Block Diagram</span>
+            </div>
+            <div class="title-underline"></div>
+            <div class="section-content">
+                <div class="block-diagram">
+                    <div class="diagram-box"><i class="fas fa-industry"></i> SCADA Telemetry Sources</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="diagram-box"><i class="fas fa-code-branch"></i> Hybrid Data Router</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="split-container">
+                        <div class="diagram-box" style="border-color: #ff00ff;"><i class="fas fa-database"></i> SQL Database<br><span style="font-size:0.8rem;">production_history</span></div>
+                        <div class="diagram-box" style="border-color: #00ffaa;"><i class="fas fa-database"></i> MongoDB<br><span style="font-size:0.8rem;">fault_logs (schemaless)</span></div>
+                    </div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="diagram-box"><i class="fas fa-chart-pie"></i> Web Dashboard - KPIs & Visualizations</div>
+                    <div class="split-container">
+                        <div class="diagram-box"><i class="fas fa-chart-line"></i> OEE Index</div>
+                        <div class="diagram-box"><i class="fas fa-clock"></i> Downtime Forecast</div>
+                        <div class="diagram-box"><i class="fas fa-wifi"></i> Live Telemetry</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Software Requirements -->
+        <div class="section" id="sec6">
+            <div class="section-title">
+                <i class="fas fa-laptop-code"></i>
+                <span>Software Requirements</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
                 <div class="software-grid">
-                    <div class="software-item">🌐 HTML5 / CSS3 / JavaScript</div>
-                    <div class="software-item">⚛️ React / Vanilla JS</div>
-                    <div class="software-item">🚀 Node.js / Python Flask</div>
-                    <div class="software-item">🐬 MySQL / PostgreSQL</div>
-                    <div class="software-item">🍃 MongoDB Atlas</div>
-                    <div class="software-item">📦 Git & GitHub</div>
-                    <div class="software-item">▲ Vercel (Deployment)</div>
-                    <div class="software-item">🔌 REST API / WebSockets</div>
+                    <div class="software-card"><i class="fab fa-html5"></i><br>HTML5/CSS3/JS</div>
+                    <div class="software-card"><i class="fab fa-react"></i><br>React / Vanilla JS</div>
+                    <div class="software-card"><i class="fab fa-node-js"></i><br>Node.js / Flask</div>
+                    <div class="software-card"><i class="fas fa-database"></i><br>MySQL / PostgreSQL</div>
+                    <div class="software-card"><i class="fas fa-database"></i><br>MongoDB Atlas</div>
+                    <div class="software-card"><i class="fab fa-git-alt"></i><br>Git & GitHub</div>
+                    <div class="software-card"><i class="fas fa-cloud-upload-alt"></i><br>Vercel</div>
+                    <div class="software-card"><i class="fas fa-plug"></i><br>REST API</div>
                 </div>
             </div>
         </div>
 
         <!-- 8. Working Methodology -->
-        <div class="section">
-            <h2 class="section-title">⚙️ 8. Working Methodology</h2>
+        <div class="section" id="sec7">
+            <div class="section-title">
+                <i class="fas fa-cogs"></i>
+                <span>Working Methodology</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
-                <div class="methodology-steps">
-                    <div class="step"><span class="step-number">1.</span> <strong>Data Ingestion:</strong> Simulated SCADA clusters generate operational metrics (core temp, vibration noise, oil pressure) and fault signals.</div>
-                    <div class="step"><span class="step-number">2.</span> <strong>Hybrid Routing:</strong> Structured data → SQL (production_history), Unstructured fault logs → MongoDB (fault_logs).</div>
-                    <div class="step"><span class="step-number">3.</span> <strong>Processing:</strong> Dashboard queries both databases in real-time via REST APIs.</div>
-                    <div class="step"><span class="step-number">4.</span> <strong>Analytics:</strong> Global OEE Index computed from good vs. scrap units. Downtime Forecast based on historical fault patterns.</div>
-                    <div class="step"><span class="step-number">5.</span> <strong>Visualization:</strong> Dashboard renders live telemetry gauges, SQL table, MongoDB fault list, and engineering recommendations.</div>
-                </div>
+                <div class="step"><span class="step-number">1</span> <strong>Data Ingestion</strong> — SCADA clusters generate operational metrics and fault signals</div>
+                <div class="step"><span class="step-number">2</span> <strong>Hybrid Routing</strong> — Structured data → SQL, Unstructured logs → MongoDB</div>
+                <div class="step"><span class="step-number">3</span> <strong>Processing</strong> — Dashboard queries both databases via REST APIs</div>
+                <div class="step"><span class="step-number">4</span> <strong>Analytics</strong> — OEE computation, downtime forecasting, risk assessment</div>
+                <div class="step"><span class="step-number">5</span> <strong>Visualization</strong> — Live telemetry gauges, tables, engineering recommendations</div>
             </div>
         </div>
 
         <!-- 9. Flowchart -->
-        <div class="section">
-            <h2 class="section-title">📈 9. Flowchart</h2>
+        <div class="section" id="sec8">
+            <div class="section-title">
+                <i class="fas fa-chart-simple"></i>
+                <span>Flowchart</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
                 <div class="flowchart">
-                    <div class="flow-node">🚀 START → SCADA Telemetry Generation</div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="flow-node">🔄 Hybrid Data Router</div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="diagram-split">
-                        <div class="flow-node" style="border-color: #ff00ff;">📥 Insert into SQL<br>production_history</div>
-                        <div class="flow-node" style="border-color: #00ffaa;">📥 Insert into MongoDB<br>fault_logs</div>
+                    <div class="flow-node"><i class="fas fa-play"></i> START → SCADA Telemetry</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-node"><i class="fas fa-code-branch"></i> Hybrid Data Router</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="split-container">
+                        <div class="flow-node"><i class="fas fa-database"></i> Insert SQL</div>
+                        <div class="flow-node"><i class="fas fa-database"></i> Insert MongoDB</div>
                     </div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="flow-node">📊 Dashboard Query Engine</div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="diagram-split">
-                        <div class="flow-node">📈 OEE</div>
-                        <div class="flow-node">🔮 Downtime Forecast</div>
-                        <div class="flow-node">📡 Live Telemetry</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-node"><i class="fas fa-chart-line"></i> Dashboard Query Engine</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="split-container">
+                        <div class="flow-node">OEE</div>
+                        <div class="flow-node">Downtime Forecast</div>
+                        <div class="flow-node">Live Telemetry</div>
                     </div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="flow-node">🖱️ User Action: Manual Override → Push to DBs</div>
-                    <div class="flow-arrow">▼</div>
-                    <div class="flow-node">🏁 END Cycle</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-node"><i class="fas fa-hand-pointer"></i> Manual Override → Push to DBs</div>
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-node"><i class="fas fa-stop"></i> END</div>
                 </div>
             </div>
         </div>
 
         <!-- 11. Algorithm -->
-        <div class="section">
-            <h2 class="section-title">📝 11. Algorithm</h2>
+        <div class="section" id="sec9">
+            <div class="section-title">
+                <i class="fas fa-code"></i>
+                <span>Algorithm</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
                 <div class="algorithm">
                     <ol>
-                        <li><strong>SCADA Data Capture:</strong> Read sensor triple (CoreTemp, VibNoise, OilPressure) and shift production values (GoodUnits, ScrapUnits, PistonPressure)</li>
-                        <li><strong>Structured SQL Insert:</strong> <code>INSERT INTO production_history (good_units, piston_pressure_psi, scrap_units) VALUES (good, pressure, scrap);</code></li>
-                        <li><strong>Semi-structured MongoDB Insert:</strong> Construct BSON document with timestamp, component, values, active_alarm flag → Insert into <code>fault_logs</code></li>
-                        <li><strong>OEE Index Calculation:</strong> <code>OEE = (Total Good Units) / (Total Good + Total Scrap) × 100</code></li>
-                        <li><strong>Breakdown Risk Forecast:</strong> <code>Risk% = f(fault_frequency, scrap_trend, pressure_variance)</code> → Output: <strong>37%</strong></li>
-                        <li><strong>Cutoff Window:</strong> Based on MTBF extrapolation → <strong>~140 hours</strong></li>
-                        <li><strong>Active Alarm Monitor:</strong> Count documents where <code>active_alarm == true</code></li>
-                        <li><strong>Dashboard Refresh:</strong> Update KPI cards, render SQL table, list MongoDB fault logs</li>
+                        <li><strong>SCADA Data Capture</strong> — Read sensor triple (CoreTemp, VibNoise, OilPressure) and shift values</li>
+                        <li><strong>Structured SQL Insert</strong> — <code>INSERT INTO production_history (good_units, piston_pressure_psi, scrap_units) VALUES (...);</code></li>
+                        <li><strong>Semi-structured MongoDB Insert</strong> — Construct BSON document → Insert into <code>fault_logs</code></li>
+                        <li><strong>OEE Index Calculation</strong> — <code>OEE = (Total Good) / (Total Good + Total Scrap) × 100</code></li>
+                        <li><strong>Breakdown Risk Forecast</strong> — <code>Risk% = f(fault_frequency, scrap_trend, pressure_variance)</code> → <strong>37%</strong></li>
+                        <li><strong>Cutoff Window</strong> — MTBF extrapolation → <strong>~140 hours</strong></li>
+                        <li><strong>Active Alarm Monitor</strong> — Count where <code>active_alarm == true</code></li>
+                        <li><strong>Dashboard Refresh</strong> — Update KPI cards, tables, visualizations</li>
                     </ol>
                 </div>
             </div>
         </div>
 
-        <!-- 12. Results and Discussion -->
-        <div class="section">
-            <h2 class="section-title">📊 12. Results and Discussion</h2>
+        <!-- 12. Results -->
+        <div class="section" id="sec10">
+            <div class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                <span>Results and Discussion</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
                 <table class="results-table">
-                    <thead>
-                        <tr><th>KPI / Metric</th><th>Value</th><th>Status</th></tr>
-                    </thead>
+                    <thead><tr><th>KPI / Metric</th><th>Value</th><th>Status</th></tr></thead>
                     <tbody>
-                        <tr><td>Total Relational Logs</td><td class="kpi-highlight">18 Rows</td><td>✅ Active</td></tr>
-                        <tr><td>Total Document Logs</td><td class="kpi-highlight">7 Documents</td><td>✅ Active</td></tr>
-                        <tr><td>Active Alarms (BSON)</td><td class="kpi-highlight">4 Active</td><td>⚠️ Attention</td></tr>
-                        <tr><td>Global OEE Index</td><td class="kpi-highlight">98.52%</td><td>✅ Compliant</td></tr>
-                        <tr><td>Breakdown Risk</td><td class="kpi-highlight">37%</td><td>🟢 Stable</td></tr>
-                        <tr><td>Cutoff Window</td><td class="kpi-highlight">~140 hrs</td><td>🟡 Monitor</td></tr>
-                        <tr><td>Waste Factor</td><td class="kpi-highlight">2.7%</td><td>✅ Acceptable</td></tr>
+                        <tr><td>Total Relational Logs</td><td class="kpi-value">18 Rows</td><td>✅ Active</td></tr>
+                        <tr><td>Total Document Logs</td><td class="kpi-value">7 Documents</td><td>✅ Active</td></tr>
+                        <tr><td>Active Alarms (BSON)</td><td class="kpi-value">4 Active</td><td>⚠️ Attention</td></tr>
+                        <tr><td>Global OEE Index</td><td class="kpi-value">98.52%</td><td>✅ Compliant</td></tr>
+                        <tr><td>Breakdown Risk</td><td class="kpi-value">37%</td><td>🟢 Stable</td></tr>
+                        <tr><td>Cutoff Window</td><td class="kpi-value">~140 hrs</td><td>🟡 Monitor</td></tr>
+                        <tr><td>Waste Factor</td><td class="kpi-value">2.7%</td><td>✅ Acceptable</td></tr>
                     </tbody>
                 </table>
-                <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,255,0.05); border-radius: 10px;">
-                    <p><strong>📌 Discussion:</strong> The hybrid system successfully separates structured shift data from unstructured fault telemetry. The OEE of 98.52% indicates high efficiency, but the 37% breakdown risk and 2.7% scrap factor suggest predictive maintenance is needed within ~140 hours. The MongoDB fault logs provide rich, queryable context for root cause analysis.</p>
+                <div style="margin-top: 24px; padding: 20px; background: rgba(0,255,255,0.03); border-radius: 20px;">
+                    <p><i class="fas fa-comment-dots" style="color: #00ffff;"></i> <strong>Discussion:</strong> The hybrid system successfully separates structured shift data from unstructured fault telemetry. OEE of 98.52% indicates high efficiency, but 37% breakdown risk suggests predictive maintenance needed within ~140 hours.</p>
                 </div>
             </div>
         </div>
 
         <!-- 13. Applications -->
-        <div class="section">
-            <h2 class="section-title">🏭 13. Applications</h2>
+        <div class="section" id="sec11">
+            <div class="section-title">
+                <i class="fas fa-rocket"></i>
+                <span>Applications</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
                 <div class="apps-grid">
-                    <div class="app-card"><div class="app-icon">🏭</div><strong>Factory SCADA Integration</strong><br><small>Supplement existing PLC logs with hybrid storage</small></div>
-                    <div class="app-card"><div class="app-icon">🔧</div><strong>Predictive Maintenance</strong><br><small>Use MongoDB fault patterns to forecast downtime</small></div>
-                    <div class="app-card"><div class="app-icon">📊</div><strong>OEE Dashboards</strong><br><small>Real-time visibility for shop floor managers</small></div>
-                    <div class="app-card"><div class="app-icon">📜</div><strong>Regulatory Compliance</strong><br><small>Tamper-proof SQL audit trail of production shifts</small></div>
-                    <div class="app-card"><div class="app-icon">⚡</div><strong>Stress Testing</strong><br><small>Manual override mode to simulate extreme parameters</small></div>
+                    <div class="app-card"><div class="app-icon">🏭</div><strong>Factory SCADA Integration</strong><br><small>Supplement PLC logs with hybrid storage</small></div>
+                    <div class="app-card"><div class="app-icon">🔧</div><strong>Predictive Maintenance</strong><br><small>Forecast downtime from fault patterns</small></div>
+                    <div class="app-card"><div class="app-icon">📊</div><strong>OEE Dashboards</strong><br><small>Real-time visibility for managers</small></div>
+                    <div class="app-card"><div class="app-icon">📜</div><strong>Regulatory Compliance</strong><br><small>Tamper-proof SQL audit trail</small></div>
                 </div>
             </div>
         </div>
 
         <!-- 14. Future Scope -->
-        <div class="section">
-            <h2 class="section-title">🚀 14. Future Scope</h2>
+        <div class="section" id="sec12">
+            <div class="section-title">
+                <i class="fas fa-microscope"></i>
+                <span>Future Scope</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
-                <div class="future-list">
-                    <div class="future-item">🤖 <strong>Machine Learning on MongoDB logs</strong> – Auto-classify fault types (electric, mechanical, drift)</div>
-                    <div class="future-item">⚡ <strong>Real-time anomaly detection</strong> – Trigger alerts when sensor values deviate from historical baselines</div>
-                    <div class="future-item">🌍 <strong>Multi-factory aggregation</strong> – Deploy across DUSSELDORF and other clusters</div>
-                    <div class="future-item">📡 <strong>Apache Kafka integration</strong> – Stream SCADA data directly into both databases</div>
-                    <div class="future-item">📱 <strong>Mobile PWA</strong> – View downtime forecast and active alarms on handheld devices</div>
+                <div class="future-grid">
+                    <div class="future-item"><strong>🤖 ML on MongoDB Logs</strong><br>Auto-classify fault types</div>
+                    <div class="future-item"><strong>⚡ Real-time Anomaly Detection</strong><br>Alert on sensor deviations</div>
+                    <div class="future-item"><strong>🌍 Multi-factory Aggregation</strong><br>Deploy across clusters</div>
+                    <div class="future-item"><strong>📡 Apache Kafka Integration</strong><br>Stream SCADA data</div>
+                    <div class="future-item"><strong>📱 Mobile PWA</strong><br>Handheld monitoring</div>
                 </div>
             </div>
         </div>
 
         <!-- 15. Conclusion -->
-        <div class="section">
-            <h2 class="section-title">✅ 15. Conclusion</h2>
+        <div class="section" id="sec13">
+            <div class="section-title">
+                <i class="fas fa-check-double"></i>
+                <span>Conclusion</span>
+            </div>
+            <div class="title-underline"></div>
             <div class="section-content">
-                <div class="conclusion-box">
+                <div class="conclusion-card">
                     <p style="font-size: 1.1rem;">The <strong>Hybrid SQL–MongoDB Production Monitoring System</strong> was successfully designed and implemented, achieving:</p>
-                    <br>
-                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 15px 0;">
-                        <span class="badge">📊 Structured SQL storage</span>
-                        <span class="badge">📄 Flexible MongoDB fault logs</span>
-                        <span class="badge">📈 Real-time OEE: 98.52%</span>
-                        <span class="badge">🔮 Breakdown risk: 37%</span>
-                        <span class="badge">⏱️ Cutoff window: ~140 hrs</span>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 28px 0;">
+                        <span class="stats-badge"><i class="fas fa-database"></i> Structured SQL storage</span>
+                        <span class="stats-badge"><i class="fas fa-leaf"></i> Flexible MongoDB fault logs</span>
+                        <span class="stats-badge"><i class="fas fa-chart-line"></i> Real-time OEE: 98.52%</span>
+                        <span class="stats-badge"><i class="fas fa-chart-simple"></i> Breakdown risk: 37%</span>
+                        <span class="stats-badge"><i class="fas fa-hourglass-half"></i> Cutoff: ~140 hrs</span>
                     </div>
-                    <p>This portfolio demonstrates a <strong>production-ready solution</strong> for industrial analytics and downtime prediction, fully aligned with the objectives of the <strong>Data Management and Analysis</strong> course in <strong>Automation and Robotics</strong>.</p>
+                    <p>This portfolio demonstrates a <strong>production-ready solution</strong> for industrial analytics and downtime prediction, aligned with the <strong>Data Management and Analysis</strong> course in <strong>Automation and Robotics</strong>.</p>
                 </div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>📌 Hybrid SQL-MongoDB Production Monitoring System | Data Management & Analysis | Dept. of Automation & Robotics</p>
-            <p>👩‍🎓 Srushti G Joshi | USN: 01FE24BAR014</p>
-            <p style="margin-top: 10px; font-size: 0.8rem;">🔗 Live Dashboard: <a href="https://production-management-seven.vercel.app" target="_blank" style="color: #00ffff;">production-management-seven.vercel.app</a></p>
+            <p><i class="fas fa-link"></i> Live Dashboard: <a href="https://production-management-seven.vercel.app" target="_blank" style="color: #00ffff; text-decoration: none;">production-management-seven.vercel.app</a></p>
+            <p style="margin-top: 16px; font-size: 0.8rem; color: #666;">© 2025 Srushti G Joshi | Dept. of Automation & Robotics | USN: 01FE24BAR014</p>
         </div>
     </div>
+
+    <script>
+        // Scroll Animation Observer
+        const sections = document.querySelectorAll('.section');
+        
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Force trigger for visible sections on load
+        setTimeout(() => {
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    section.classList.add('visible');
+                }
+            });
+        }, 100);
+
+        // Particle Generation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 4 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = 10 + Math.random() * 15 + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+    </script>
 </body>
 </html>
