@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Srushti G Joshi | Hybrid SQL-MongoDB Monitor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ============================================
            DESIGN PHILOSOPHY & EXPLANATION
@@ -179,11 +179,11 @@
             align-items: baseline;
             gap: 0.75rem;
             margin-bottom: 1.25rem;
-            border-bottom: 2px solid var(--cyan-glow);  /* Thicker, more visible border */
+            border-bottom: 2px solid var(--cyan-glow);
             padding-bottom: 0.75rem;
         }
 
-        /* Section numbers - keep as is */
+        /* Section numbers */
         .section-num {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -191,22 +191,17 @@
             font-weight: 400;
         }
 
-        /* ALL CAPS SECTION TITLES - BOLD AND PROMINENT */
+        /* ALL CAPS SECTION TITLES */
         .section-header h2 {
             font-size: 1.4rem;
             font-weight: 700;
-            letter-spacing: 0.08em;  /* Increased spacing for caps */
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             background: linear-gradient(135deg, var(--cyan-glow), #ffffff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
-        /* Alternative: solid color version (uncomment if gradient too much) */
-        /* .section-header h2 {
-            color: var(--cyan-glow);
-        } */
 
         .section-content {
             padding-left: 1rem;
@@ -372,6 +367,107 @@
             margin-top: 1rem;
         }
 
+        /* ============================================
+           BOLD ACCESSIBLE APP LINK - HIGHLY VISIBLE
+           This makes the live dashboard link stand out prominently
+           with glowing effect, larger font, and clear call-to-action
+        ============================================ */
+        .access-app-container {
+            margin: 2rem 0 1.5rem 0;
+            text-align: center;
+        }
+
+        .access-app-card {
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.15), rgba(45, 212, 191, 0.05));
+            border: 2px solid var(--cyan-glow);
+            border-radius: 60px;
+            padding: 1.2rem 2rem;
+            display: inline-block;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+        }
+
+        .access-app-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(45, 212, 191, 0.5);
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.25), rgba(45, 212, 191, 0.1));
+        }
+
+        .access-label {
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--cyan-glow);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .access-link {
+            font-size: 1.6rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .access-link i {
+            font-size: 1.8rem;
+        }
+
+        .access-link:hover {
+            color: var(--cyan-glow);
+            text-decoration: none;
+        }
+
+        .access-arrow {
+            animation: bounceArrow 1.5s infinite;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(8px); }
+        }
+
+        .access-badge {
+            display: inline-block;
+            background: #f43f5e;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            margin-left: 0.8rem;
+            vertical-align: middle;
+            letter-spacing: normal;
+        }
+
+        /* Alternative simple bold link (in conclusion section) */
+        .bold-link {
+            display: inline-block;
+            background: rgba(45, 212, 191, 0.2);
+            border: 1.5px solid var(--cyan-glow);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--cyan-glow);
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .bold-link:hover {
+            background: var(--cyan-glow);
+            color: #0c0c12;
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+
         /* SCROLL ANIMATION */
         .fade-on-scroll {
             opacity: 0;
@@ -424,13 +520,21 @@
                 font-size: 1.1rem;
                 letter-spacing: 0.05em;
             }
+            .access-link {
+                font-size: 1rem;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+            .access-app-card {
+                padding: 0.8rem 1.2rem;
+            }
         }
 
         ::selection {
             background: rgba(45, 212, 191, 0.2);
         }
 
-        /* Extra highlight for important numbers */
+        /* Highlight for important numbers */
         .highlight-number {
             background: rgba(45, 212, 191, 0.15);
             padding: 0.1rem 0.3rem;
@@ -459,6 +563,28 @@
             <span>🏛️ AUTOMATION & ROBOTICS</span>
             <span>📚 DATA MANAGEMENT & ANALYSIS</span>
             <span>📅 BATCH 2024 · 26</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+         BOLD ACCESSIBLE APP LINK - PROMINENTLY DISPLAYED
+         This section makes the live dashboard link highly visible
+         with glowing effects, larger font, and clear call-to-action
+         ============================================ -->
+    <div class="access-app-container fade-on-scroll">
+        <div class="access-app-card">
+            <div class="access-label">
+                🚀 LIVE DEMO · ACCESS THE APPLICATION
+            </div>
+            <a href="https://production-management-seven.vercel.app" target="_blank" class="access-link">
+                <span>🔗</span>
+                <span>PRODUCTION-MANAGEMENT-SEVEN.VERCEL.APP</span>
+                <span class="access-arrow">→</span>
+                <span class="access-badge">LIVE</span>
+            </a>
+            <div style="font-size: 0.7rem; color: var(--cyan-dim); margin-top: 0.5rem;">
+                click to view live hybrid dashboard · real-time SCADA telemetry
+            </div>
         </div>
     </div>
 
@@ -729,7 +855,12 @@
         <div class="section-content">
             <div class="card-soft" style="background: #0e0e16;">
                 <p style="margin-bottom: 0.8rem;">The <strong>HYBRID SQL–MONGODB MONITOR</strong> is operational, proving that structured production logs and semi‑structured fault telemetry can coexist without trade‑offs. With <strong class="highlight-number">98.52% OEE</strong>, live manual override, and a downtime forecast window of <strong class="highlight-number">~140 hours</strong>, the system delivers industrial‑grade analytics. This portfolio aligns with the <strong>DATA MANAGEMENT & ANALYSIS</strong> course and the <strong>AUTOMATION & ROBOTICS</strong> curriculum.</p>
-                <div style="font-size: 0.75rem; color: var(--cyan-dim);">🔗 LIVE DASHBOARD: <a href="https://production-management-seven.vercel.app" target="_blank" style="text-decoration: underline;">PRODUCTION-MANAGEMENT-SEVEN.VERCEL.APP</a></div>
+                <!-- Bold visible link inside conclusion as well -->
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="https://production-management-seven.vercel.app" target="_blank" class="bold-link">
+                        🔗 ACCESS LIVE DASHBOARD → PRODUCTION-MANAGEMENT-SEVEN.VERCEL.APP
+                    </a>
+                </div>
             </div>
         </div>
     </div>
