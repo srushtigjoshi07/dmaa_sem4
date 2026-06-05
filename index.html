@@ -6,15 +6,48 @@
     <title>Srushti G Joshi | Hybrid SQL-MongoDB Monitor</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        /* ============================================
+           DESIGN PHILOSOPHY & EXPLANATION
+           ============================================
+           
+           This CSS creates a classy, organic, hand-crafted aesthetic 
+           that doesn't look AI-generated. Key choices:
+           
+           1. Color Palette (Dark but warm):
+              - #0c0c12 (deep charcoal background) - easier on eyes than pure black
+              - #2dd4bf (teal/cyan glow) - industrial tech accent
+              - #f43f5e (rose/pink) - contrast for alerts and future scope
+              - Subtle white at 3-6% opacity for borders - creates depth without harshness
+           
+           2. Typography:
+              - 'Space Grotesk' for body - geometric but human, modern industrial feel
+              - 'JetBrains Mono' for code/USN - developer credibility
+              - Letter-spacing: -0.01em - tight but readable, tech aesthetic
+           
+           3. Texture:
+              - SVG noise/grain overlay over everything - analog feel, breaks digital perfection
+              - This single element makes the page feel "real" and hand-made
+           
+           4. Animations:
+              - Subtle fade-on-scroll only - no dramatic/jarring movements
+              - 12px translateY - barely noticeable, feels organic
+           
+           5. Card design:
+              - Border radius: 24-28px (softer than sharp corners)
+              - Background: rgba(17,17,24,0.6) - semi-transparent, shows depth
+              - Border: 0.5px instead of 1px - thinner, more refined
+        ============================================ */
+
         :root {
-            --bg-dark: #0c0c12;
-            --bg-card: #111118;
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --cyan-glow: #2dd4bf;
+            /* Color variables - easy to tweak the whole theme */
+            --bg-dark: #0c0c12;        /* Deepest background */
+            --bg-card: #111118;         /* Card background */
+            --border-subtle: rgba(255, 255, 255, 0.06);  /* Almost invisible border */
+            --cyan-glow: #2dd4bf;       /* Teal accent - industrial monitoring */
             --cyan-dim: rgba(45, 212, 191, 0.4);
-            --pink-glow: #f43f5e;
-            --gray-muted: #a1a1aa;
-            --text-light: #f4f4f6;
+            --pink-glow: #f43f5e;       /* Rose accent - alerts/future */
+            --gray-muted: #a1a1aa;      /* Secondary text */
+            --text-light: #f4f4f6;      /* Primary text */
         }
 
         * {
@@ -32,7 +65,12 @@
             letter-spacing: -0.01em;
         }
 
-        /* subtle grain texture */
+        /* ============================================
+           GRAIN TEXTURE - The "secret sauce" for organic feel
+           This creates a film grain overlay that makes the design
+           look like it belongs on paper, not a screen. 
+           No AI-generated design has this by default.
+        ============================================ */
         body::before {
             content: "";
             position: fixed;
@@ -41,7 +79,7 @@
             width: 100%;
             height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
+            pointer-events: none;  /* Lets clicks pass through to content */
             z-index: 1;
             opacity: 0.4;
         }
@@ -54,7 +92,11 @@
             z-index: 2;
         }
 
-        /* header - understated & elegant */
+        /* ============================================
+           HEADER SECTION
+           Contains: Name, USN, Department, Course, Project Title
+           Purpose: Identity and context - who created this
+        ============================================ */
         .header {
             margin-bottom: 4rem;
             border-bottom: 1px solid var(--border-subtle);
@@ -94,6 +136,7 @@
             letter-spacing: -0.02em;
         }
 
+        /* Gradient text - subtle, not overwhelming */
         .project-title span {
             background: linear-gradient(110deg, #e4e4e7 0%, #2dd4bf 45%, #f43f5e 80%);
             background-clip: text;
@@ -118,7 +161,11 @@
             color: #9ca3af;
         }
 
-        /* section styling */
+        /* ============================================
+           SECTION STYLES
+           Each major section (Abstract, Problem, Objectives, etc.)
+           has the same structure: number + title + content
+        ============================================ */
         .section {
             margin-bottom: 3.5rem;
             scroll-margin-top: 2rem;
@@ -133,6 +180,7 @@
             padding-bottom: 0.5rem;
         }
 
+        /* Section numbers (01, 02, 03...) - gives academic/professional feel */
         .section-num {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -151,7 +199,7 @@
             color: #d4d4d8;
         }
 
-        /* cards and content */
+        /* Card component - used for block diagram, algorithm, etc. */
         .card-soft {
             background: rgba(17, 17, 24, 0.6);
             border-radius: 24px;
@@ -160,6 +208,7 @@
             transition: all 0.2s ease;
         }
 
+        /* Two column grid - responsive, used for objectives, applications */
         .grid-2col {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -167,6 +216,7 @@
             margin-top: 0.8rem;
         }
 
+        /* Small badge/pill for tags */
         .stat-pill {
             background: rgba(45, 212, 191, 0.08);
             border-radius: 40px;
@@ -177,7 +227,10 @@
             border: 0.5px solid rgba(45, 212, 191, 0.2);
         }
 
-        /* block diagram - handmade look */
+        /* ============================================
+           BLOCK DIAGRAM - Visual data flow
+           Shows: SCADA → Router → SQL+MongoDB → Dashboard
+        ============================================ */
         .block-diagram {
             background: #0e0e16;
             border-radius: 28px;
@@ -218,7 +271,10 @@
             margin: 1rem 0;
         }
 
-        /* algorithm / steps */
+        /* ============================================
+           METHODOLOGY STEPS
+           Numbered steps showing the working process
+        ============================================ */
         .step-item {
             display: flex;
             gap: 1rem;
@@ -241,7 +297,10 @@
             margin-top: 0.1rem;
         }
 
-        /* tables */
+        /* ============================================
+           RESULTS TABLE
+           Shows actual KPIs from the deployed system
+        ============================================ */
         .results-table {
             width: 100%;
             border-collapse: collapse;
@@ -267,7 +326,7 @@
             font-family: monospace;
         }
 
-        /* apps & future */
+        /* Applications cards */
         .app-item {
             background: #101018;
             border-radius: 20px;
@@ -275,6 +334,7 @@
             border: 0.5px solid rgba(255,255,255,0.03);
         }
 
+        /* Future scope items - pink accent for forward-looking */
         .future-chip {
             background: rgba(244, 63, 94, 0.06);
             border-left: 2px solid #f43f5e;
@@ -282,7 +342,7 @@
             border-radius: 16px;
         }
 
-        /* quote / engineering note */
+        /* Quote/note box for engineering recommendations */
         .note-quote {
             background: rgba(45, 212, 191, 0.04);
             padding: 1.2rem;
@@ -292,7 +352,11 @@
             margin-top: 1rem;
         }
 
-        /* scroll animation - minimal */
+        /* ============================================
+           SCROLL ANIMATION
+           Elements fade in as they enter viewport
+           Creates a reading rhythm without being distracting
+        ============================================ */
         .fade-on-scroll {
             opacity: 0;
             transform: translateY(12px);
@@ -304,7 +368,7 @@
             transform: translateY(0);
         }
 
-        /* footer */
+        /* Footer */
         .footer {
             margin-top: 4rem;
             padding-top: 1.5rem;
@@ -322,7 +386,7 @@
             text-decoration: none;
         }
 
-        /* responsive */
+        /* Responsive design - mobile friendly */
         @media (max-width: 680px) {
             .container {
                 padding: 1.5rem;
@@ -338,7 +402,6 @@
             }
         }
 
-        /* custom selection */
         ::selection {
             background: rgba(45, 212, 191, 0.2);
         }
@@ -347,7 +410,10 @@
 <body>
 
 <div class="container">
-    <!-- header with name / usn / dept -->
+    <!-- ============================================
+         HEADER SECTION
+         Contains student identification and project title
+         ============================================ -->
     <div class="header">
         <div class="name-title">
             <div class="name">Srushti G Joshi</div>
@@ -367,7 +433,11 @@
         </div>
     </div>
 
-    <!-- 1. title (short, already shown, but keep structure) -->
+    <!-- ============================================
+         SECTION 01: TITLE
+         Explains: Full project name and what it means
+         Why: Formal identification of the work
+         ============================================ -->
     <div class="section fade-on-scroll" id="title-sec">
         <div class="section-header">
             <span class="section-num">01</span>
@@ -382,7 +452,11 @@
         </div>
     </div>
 
-    <!-- 2. abstract -->
+    <!-- ============================================
+         SECTION 02: ABSTRACT
+         Explains: One-paragraph summary of entire project
+         Includes: Problem, approach, technologies, key results (98.52% OEE)
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">02</span>
@@ -393,7 +467,11 @@
         </div>
     </div>
 
-    <!-- 3. problem statement -->
+    <!-- ============================================
+         SECTION 03: PROBLEM STATEMENT
+         Explains: The gap/challenge that motivated this project
+         Why single database can't handle both data types efficiently
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">03</span>
@@ -414,7 +492,11 @@
         </div>
     </div>
 
-    <!-- 4. objectives -->
+    <!-- ============================================
+         SECTION 04: OBJECTIVES
+         Explains: 5 specific, measurable goals of the project
+         Each objective is a bullet point that was achieved
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">04</span>
@@ -431,7 +513,11 @@
         </div>
     </div>
 
-    <!-- 5. block diagram (hand-drawn style) -->
+    <!-- ============================================
+         SECTION 05: BLOCK DIAGRAM
+         Explains: Visual data flow through the system
+         SCADA → Router → SQL + MongoDB → Dashboard → KPIs
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">05</span>
@@ -458,7 +544,11 @@
         </div>
     </div>
 
-    <!-- 7. software requirements (excluded hardware) -->
+    <!-- ============================================
+         SECTION 06: SOFTWARE REQUIREMENTS
+         Explains: All software tools used to build the system
+         Note: Hardware requirements excluded per your request
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">06</span>
@@ -476,7 +566,11 @@
         </div>
     </div>
 
-    <!-- 8. working methodology -->
+    <!-- ============================================
+         SECTION 07: WORKING METHODOLOGY
+         Explains: Step-by-step process from data to insights
+         Steps: Ingest → Route → Process → Analyze → Visualize
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">07</span>
@@ -491,7 +585,11 @@
         </div>
     </div>
 
-    <!-- 9. flowchart (simple & readable) -->
+    <!-- ============================================
+         SECTION 08: FLOWCHART
+         Explains: Decision/logic flow of the system
+         Shows loops, decision points, and data routing
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">08</span>
@@ -515,7 +613,11 @@
         </div>
     </div>
 
-    <!-- 11. algorithm -->
+    <!-- ============================================
+         SECTION 09: ALGORITHM
+         Explains: Exact pseudocode/logical steps
+         Shows SQL query, MongoDB document structure, OEE formula, risk calculation
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">09</span>
@@ -535,7 +637,12 @@
         </div>
     </div>
 
-    <!-- 12. results and discussion (live KPIs) -->
+    <!-- ============================================
+         SECTION 10: RESULTS AND DISCUSSION
+         Explains: Actual measured outcomes from deployed system
+         Table shows: 18 SQL rows, 7 MongoDB docs, 4 active alarms, 98.52% OEE, etc.
+         Discussion interprets what these numbers mean
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">10</span>
@@ -560,7 +667,11 @@
         </div>
     </div>
 
-    <!-- 13. applications -->
+    <!-- ============================================
+         SECTION 11: APPLICATIONS
+         Explains: Real-world use cases for this system
+         Each application is a specific scenario with value
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">11</span>
@@ -576,7 +687,11 @@
         </div>
     </div>
 
-    <!-- 14. future scope -->
+    <!-- ============================================
+         SECTION 12: FUTURE SCOPE
+         Explains: Potential improvements and extensions
+         Shows forward-thinking and project scalability
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">12</span>
@@ -593,7 +708,12 @@
         </div>
     </div>
 
-    <!-- 15. conclusion -->
+    <!-- ============================================
+         SECTION 13: CONCLUSION
+         Explains: Final summary of achievements
+         Recaps key metrics and confirms objectives met
+         Links to live dashboard for verification
+         ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">13</span>
@@ -607,7 +727,10 @@
         </div>
     </div>
 
-    <!-- footer -->
+    <!-- ============================================
+         FOOTER
+         Explains: Project metadata, copyright, and attribution
+         ============================================ -->
     <div class="footer">
         <span>Srushti G Joshi · automation & robotics</span>
         <span>data management & analysis · 01FE24BAR014</span>
@@ -616,17 +739,26 @@
 </div>
 
 <script>
-    // scroll reveal — subtle and clean
+    /* ============================================
+       SCROLL REVEAL ANIMATION
+       When elements with class 'fade-on-scroll' enter the viewport,
+       they get class 'visible' which triggers the fade-in.
+       Creates a pleasant reading rhythm without being distracting.
+       ============================================ */
     const fadeElements = document.querySelectorAll('.fade-on-scroll');
+    
     function checkVisibility() {
         for (let el of fadeElements) {
             const rect = el.getBoundingClientRect();
             const windowHeight = window.innerHeight;
+            // Element becomes visible when it's 80px from viewport bottom
             if (rect.top < windowHeight - 80) {
                 el.classList.add('visible');
             }
         }
     }
+    
+    // Run on scroll, resize, and initial load
     window.addEventListener('scroll', checkVisibility);
     window.addEventListener('resize', checkVisibility);
     checkVisibility();
