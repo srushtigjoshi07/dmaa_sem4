@@ -22,7 +22,7 @@
            2. Typography:
               - 'Space Grotesk' for body - geometric but human, modern industrial feel
               - 'JetBrains Mono' for code/USN - developer credibility
-              - Letter-spacing: -0.01em - tight but readable, tech aesthetic
+              - SECTION TITLES IN ALL CAPS for hierarchy and emphasis
            
            3. Texture:
               - SVG noise/grain overlay over everything - analog feel, breaks digital perfection
@@ -48,6 +48,8 @@
             --pink-glow: #f43f5e;       /* Rose accent - alerts/future */
             --gray-muted: #a1a1aa;      /* Secondary text */
             --text-light: #f4f4f6;      /* Primary text */
+            --highlight-bg: rgba(45, 212, 191, 0.08);  /* Section highlight background */
+            --highlight-border: rgba(45, 212, 191, 0.25); /* Highlight border */
         }
 
         * {
@@ -65,12 +67,7 @@
             letter-spacing: -0.01em;
         }
 
-        /* ============================================
-           GRAIN TEXTURE - The "secret sauce" for organic feel
-           This creates a film grain overlay that makes the design
-           look like it belongs on paper, not a screen. 
-           No AI-generated design has this by default.
-        ============================================ */
+        /* Grain texture overlay for organic feel */
         body::before {
             content: "";
             position: fixed;
@@ -79,7 +76,7 @@
             width: 100%;
             height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;  /* Lets clicks pass through to content */
+            pointer-events: none;
             z-index: 1;
             opacity: 0.4;
         }
@@ -92,11 +89,7 @@
             z-index: 2;
         }
 
-        /* ============================================
-           HEADER SECTION
-           Contains: Name, USN, Department, Course, Project Title
-           Purpose: Identity and context - who created this
-        ============================================ */
+        /* HEADER SECTION */
         .header {
             margin-bottom: 4rem;
             border-bottom: 1px solid var(--border-subtle);
@@ -136,7 +129,6 @@
             letter-spacing: -0.02em;
         }
 
-        /* Gradient text - subtle, not overwhelming */
         .project-title span {
             background: linear-gradient(110deg, #e4e4e7 0%, #2dd4bf 45%, #f43f5e 80%);
             background-clip: text;
@@ -162,13 +154,24 @@
         }
 
         /* ============================================
-           SECTION STYLES
-           Each major section (Abstract, Problem, Objectives, etc.)
-           has the same structure: number + title + content
+           SECTION STYLES - HIGHLIGHTED & ALL CAPS TITLES
+           Each section has a subtle highlight effect on hover
+           Section titles are in ALL CAPS for bold hierarchy
         ============================================ */
         .section {
             margin-bottom: 3.5rem;
             scroll-margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* HIGHLIGHT EFFECT - Entire section glows slightly on hover */
+        .section:hover {
+            background: var(--highlight-bg);
+            border-radius: 28px;
+            padding: 0.5rem;
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
+            transition: all 0.3s ease;
         }
 
         .section-header {
@@ -176,11 +179,11 @@
             align-items: baseline;
             gap: 0.75rem;
             margin-bottom: 1.25rem;
-            border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--cyan-glow);  /* Thicker, more visible border */
+            padding-bottom: 0.75rem;
         }
 
-        /* Section numbers (01, 02, 03...) - gives academic/professional feel */
+        /* Section numbers - keep as is */
         .section-num {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -188,18 +191,29 @@
             font-weight: 400;
         }
 
+        /* ALL CAPS SECTION TITLES - BOLD AND PROMINENT */
         .section-header h2 {
-            font-size: 1.3rem;
-            font-weight: 500;
-            letter-spacing: -0.01em;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;  /* Increased spacing for caps */
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--cyan-glow), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
+
+        /* Alternative: solid color version (uncomment if gradient too much) */
+        /* .section-header h2 {
+            color: var(--cyan-glow);
+        } */
 
         .section-content {
             padding-left: 1rem;
             color: #d4d4d8;
         }
 
-        /* Card component - used for block diagram, algorithm, etc. */
+        /* Card component */
         .card-soft {
             background: rgba(17, 17, 24, 0.6);
             border-radius: 24px;
@@ -208,7 +222,7 @@
             transition: all 0.2s ease;
         }
 
-        /* Two column grid - responsive, used for objectives, applications */
+        /* Two column grid */
         .grid-2col {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -216,7 +230,7 @@
             margin-top: 0.8rem;
         }
 
-        /* Small badge/pill for tags */
+        /* Small badge/pill */
         .stat-pill {
             background: rgba(45, 212, 191, 0.08);
             border-radius: 40px;
@@ -227,10 +241,7 @@
             border: 0.5px solid rgba(45, 212, 191, 0.2);
         }
 
-        /* ============================================
-           BLOCK DIAGRAM - Visual data flow
-           Shows: SCADA → Router → SQL+MongoDB → Dashboard
-        ============================================ */
+        /* BLOCK DIAGRAM */
         .block-diagram {
             background: #0e0e16;
             border-radius: 28px;
@@ -271,10 +282,7 @@
             margin: 1rem 0;
         }
 
-        /* ============================================
-           METHODOLOGY STEPS
-           Numbered steps showing the working process
-        ============================================ */
+        /* METHODOLOGY STEPS */
         .step-item {
             display: flex;
             gap: 1rem;
@@ -297,10 +305,7 @@
             margin-top: 0.1rem;
         }
 
-        /* ============================================
-           RESULTS TABLE
-           Shows actual KPIs from the deployed system
-        ============================================ */
+        /* RESULTS TABLE */
         .results-table {
             width: 100%;
             border-collapse: collapse;
@@ -310,9 +315,11 @@
         .results-table th {
             text-align: left;
             padding: 0.75rem 0.5rem 0.5rem 0;
-            font-weight: 500;
-            color: #9ca3af;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-weight: 600;
+            color: var(--cyan-glow);
+            border-bottom: 1px solid rgba(45, 212, 191, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .results-table td {
@@ -322,8 +329,9 @@
 
         .kpi-highlight {
             color: var(--cyan-glow);
-            font-weight: 500;
+            font-weight: 600;
             font-family: monospace;
+            font-size: 1rem;
         }
 
         /* Applications cards */
@@ -332,17 +340,29 @@
             border-radius: 20px;
             padding: 1.2rem;
             border: 0.5px solid rgba(255,255,255,0.03);
+            transition: all 0.2s ease;
         }
 
-        /* Future scope items - pink accent for forward-looking */
+        .app-item:hover {
+            border-color: var(--cyan-glow);
+            background: rgba(45, 212, 191, 0.05);
+        }
+
+        /* Future scope items */
         .future-chip {
             background: rgba(244, 63, 94, 0.06);
-            border-left: 2px solid #f43f5e;
+            border-left: 3px solid #f43f5e;
             padding: 0.8rem 1rem;
             border-radius: 16px;
+            transition: all 0.2s ease;
         }
 
-        /* Quote/note box for engineering recommendations */
+        .future-chip:hover {
+            background: rgba(244, 63, 94, 0.12);
+            transform: translateX(4px);
+        }
+
+        /* Quote/note box */
         .note-quote {
             background: rgba(45, 212, 191, 0.04);
             padding: 1.2rem;
@@ -352,11 +372,7 @@
             margin-top: 1rem;
         }
 
-        /* ============================================
-           SCROLL ANIMATION
-           Elements fade in as they enter viewport
-           Creates a reading rhythm without being distracting
-        ============================================ */
+        /* SCROLL ANIMATION */
         .fade-on-scroll {
             opacity: 0;
             transform: translateY(12px);
@@ -386,7 +402,11 @@
             text-decoration: none;
         }
 
-        /* Responsive design - mobile friendly */
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
         @media (max-width: 680px) {
             .container {
                 padding: 1.5rem;
@@ -400,20 +420,29 @@
             .section-content {
                 padding-left: 0;
             }
+            .section-header h2 {
+                font-size: 1.1rem;
+                letter-spacing: 0.05em;
+            }
         }
 
         ::selection {
             background: rgba(45, 212, 191, 0.2);
+        }
+
+        /* Extra highlight for important numbers */
+        .highlight-number {
+            background: rgba(45, 212, 191, 0.15);
+            padding: 0.1rem 0.3rem;
+            border-radius: 8px;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- ============================================
-         HEADER SECTION
-         Contains student identification and project title
-         ============================================ -->
+    <!-- HEADER SECTION -->
     <div class="header">
         <div class="name-title">
             <div class="name">Srushti G Joshi</div>
@@ -427,26 +456,24 @@
             industrial analytics · downtime prediction · hybrid telemetry
         </div>
         <div class="dept-row">
-            <span>automation & robotics</span>
-            <span>data management & analysis</span>
-            <span>batch 2024 · 26</span>
+            <span>🏛️ AUTOMATION & ROBOTICS</span>
+            <span>📚 DATA MANAGEMENT & ANALYSIS</span>
+            <span>📅 BATCH 2024 · 26</span>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 01: TITLE
-         Explains: Full project name and what it means
-         Why: Formal identification of the work
          ============================================ -->
     <div class="section fade-on-scroll" id="title-sec">
         <div class="section-header">
             <span class="section-num">01</span>
-            <h2>title</h2>
+            <h2>TITLE</h2>
         </div>
         <div class="section-content">
-            <p class="stat-pill" style="margin-bottom: 0.8rem;">full concept</p>
+            <p class="stat-pill" style="margin-bottom: 0.8rem;">FULL CONCEPT</p>
             <div class="card-soft">
-                <span style="font-size: 1.1rem; font-weight: 450;">Hybrid Telemetry Harvester</span><br>
+                <span style="font-size: 1.1rem; font-weight: 600;">Hybrid Telemetry Harvester</span><br>
                 <span style="color: #b9b9c5;">A SQL–MongoDB production monitoring system for real‑time industrial analytics and downtime prediction.</span>
             </div>
         </div>
@@ -454,53 +481,47 @@
 
     <!-- ============================================
          SECTION 02: ABSTRACT
-         Explains: One-paragraph summary of entire project
-         Includes: Problem, approach, technologies, key results (98.52% OEE)
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">02</span>
-            <h2>abstract</h2>
+            <h2>ABSTRACT</h2>
         </div>
         <div class="section-content">
-            <p>This work builds a <strong>dual‑database pipeline</strong> where structured shift data (good units, scrap, pressure) lives in SQL, while semi‑structured sensor faults and drift signals flow into MongoDB. A live dashboard — currently deployed — visualises OEE, active alarms, breakdown risk and real‑time telemetry. The system achieves <strong>98.52% Global OEE</strong> and predicts downtime windows with ~140h cutoff, bridging the gap between relational integrity and document flexibility.</p>
+            <p>This work builds a <strong class="highlight-number">dual‑database pipeline</strong> where structured shift data (good units, scrap, pressure) lives in <strong>SQL</strong>, while semi‑structured sensor faults and drift signals flow into <strong>MongoDB</strong>. A live dashboard — currently deployed — visualises OEE, active alarms, breakdown risk and real‑time telemetry. The system achieves <strong class="highlight-number">98.52% Global OEE</strong> and predicts downtime windows with <strong class="highlight-number">~140h cutoff</strong>, bridging the gap between relational integrity and document flexibility.</p>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 03: PROBLEM STATEMENT
-         Explains: The gap/challenge that motivated this project
-         Why single database can't handle both data types efficiently
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">03</span>
-            <h2>problem statement</h2>
+            <h2>PROBLEM STATEMENT</h2>
         </div>
         <div class="section-content">
             <div class="grid-2col">
                 <div class="card-soft">
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚙️</div>
-                    <div><strong>SQL rigidity</strong> — struggles with schemaless fault signatures</div>
+                    <div><strong>SQL RIGIDITY</strong> — struggles with schemaless fault signatures</div>
                 </div>
                 <div class="card-soft">
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📄</div>
-                    <div><strong>MongoDB isolation</strong> — lacks robust production aggregation</div>
+                    <div><strong>MONGODB ISOLATION</strong> — lacks robust production aggregation</div>
                 </div>
             </div>
-            <p style="margin-top: 1rem;">Factories generate mixed data: structured shift logs and evolving sensor faults. No single database handles both efficiently. The result: fragmented visibility, delayed downtime prediction, and manual correlation.</p>
+            <p style="margin-top: 1rem;">Factories generate mixed data: structured shift logs and evolving sensor faults. <strong>No single database handles both efficiently.</strong> The result: fragmented visibility, delayed downtime prediction, and manual correlation.</p>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 04: OBJECTIVES
-         Explains: 5 specific, measurable goals of the project
-         Each objective is a bullet point that was achieved
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">04</span>
-            <h2>objectives</h2>
+            <h2>OBJECTIVES</h2>
         </div>
         <div class="section-content">
             <div class="grid-2col">
@@ -515,30 +536,28 @@
 
     <!-- ============================================
          SECTION 05: BLOCK DIAGRAM
-         Explains: Visual data flow through the system
-         SCADA → Router → SQL + MongoDB → Dashboard → KPIs
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">05</span>
-            <h2>block diagram</h2>
+            <h2>BLOCK DIAGRAM</h2>
         </div>
         <div class="section-content">
             <div class="block-diagram">
-                <div class="flow-row"><div class="flow-node">SCADA telemetry clusters</div></div>
+                <div class="flow-row"><div class="flow-node">🏭 SCADA TELEMETRY CLUSTERS</div></div>
                 <div class="arrow-symbol">▼</div>
-                <div class="flow-row"><div class="flow-node">hybrid data router</div></div>
+                <div class="flow-row"><div class="flow-node">🔄 HYBRID DATA ROUTER</div></div>
                 <div class="arrow-symbol">▼</div>
                 <div class="split-flow">
-                    <div class="flow-node">🗄️ SQL · production_history</div>
-                    <div class="flow-node">🍃 MongoDB · fault_logs</div>
+                    <div class="flow-node">🗄️ SQL · PRODUCTION_HISTORY</div>
+                    <div class="flow-node">🍃 MONGODB · FAULT_LOGS</div>
                 </div>
                 <div class="arrow-symbol">▼</div>
-                <div class="flow-row"><div class="flow-node">dashboard: KPIs + live telemetry</div></div>
+                <div class="flow-row"><div class="flow-node">📊 DASHBOARD: KPIS + LIVE TELEMETRY</div></div>
                 <div class="split-flow">
-                    <div class="flow-node">OEE index</div>
-                    <div class="flow-node">downtime forecast</div>
-                    <div class="flow-node">active alarms</div>
+                    <div class="flow-node">📈 OEE INDEX</div>
+                    <div class="flow-node">⏱️ DOWNTIME FORECAST</div>
+                    <div class="flow-node">🚨 ACTIVE ALARMS</div>
                 </div>
             </div>
         </div>
@@ -546,219 +565,197 @@
 
     <!-- ============================================
          SECTION 06: SOFTWARE REQUIREMENTS
-         Explains: All software tools used to build the system
-         Note: Hardware requirements excluded per your request
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">06</span>
-            <h2>software requirements</h2>
+            <h2>SOFTWARE REQUIREMENTS</h2>
         </div>
         <div class="section-content">
             <div class="grid-2col">
-                <span class="stat-pill">node.js / flask</span>
-                <span class="stat-pill">mysql / postgresql</span>
-                <span class="stat-pill">mongodb atlas</span>
-                <span class="stat-pill">vercel (frontend)</span>
-                <span class="stat-pill">git + github</span>
-                <span class="stat-pill">rest api / websocket</span>
+                <span class="stat-pill">🌐 NODE.JS / FLASK</span>
+                <span class="stat-pill">🐬 MYSQL / POSTGRESQL</span>
+                <span class="stat-pill">🍃 MONGODB ATLAS</span>
+                <span class="stat-pill">▲ VERCEL (FRONTEND)</span>
+                <span class="stat-pill">📦 GIT + GITHUB</span>
+                <span class="stat-pill">🔌 REST API / WEBSOCKET</span>
             </div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 07: WORKING METHODOLOGY
-         Explains: Step-by-step process from data to insights
-         Steps: Ingest → Route → Process → Analyze → Visualize
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">07</span>
-            <h2>working methodology</h2>
+            <h2>WORKING METHODOLOGY</h2>
         </div>
         <div class="section-content">
-            <div class="step-item"><span class="step-nr">1</span> <span>Ingest SCADA telemetry (core temp, vibration, oil pressure) & shift counters.</span></div>
-            <div class="step-item"><span class="step-nr">2</span> <span>Route structured metrics → SQL (<code>production_history</code>).</span></div>
-            <div class="step-item"><span class="step-nr">3</span> <span>Route fault logs & drift signals → MongoDB (<code>fault_logs</code>).</span></div>
-            <div class="step-item"><span class="step-nr">4</span> <span>Compute OEE, breakdown risk (37%), waste factor (2.7%).</span></div>
-            <div class="step-item"><span class="step-nr">5</span> <span>Render live sensor rig & alarms; manual override triggers hybrid insert.</span></div>
+            <div class="step-item"><span class="step-nr">1</span> <span><strong>INGEST</strong> SCADA telemetry (core temp, vibration, oil pressure) & shift counters.</span></div>
+            <div class="step-item"><span class="step-nr">2</span> <span><strong>ROUTE</strong> structured metrics → SQL (<code>production_history</code>).</span></div>
+            <div class="step-item"><span class="step-nr">3</span> <span><strong>ROUTE</strong> fault logs & drift signals → MongoDB (<code>fault_logs</code>).</span></div>
+            <div class="step-item"><span class="step-nr">4</span> <span><strong>COMPUTE</strong> OEE, breakdown risk (37%), waste factor (2.7%).</span></div>
+            <div class="step-item"><span class="step-nr">5</span> <span><strong>RENDER</strong> live sensor rig & alarms; manual override triggers hybrid insert.</span></div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 08: FLOWCHART
-         Explains: Decision/logic flow of the system
-         Shows loops, decision points, and data routing
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">08</span>
-            <h2>flowchart</h2>
+            <h2>FLOWCHART</h2>
         </div>
         <div class="section-content">
             <div class="block-diagram" style="padding: 1.2rem;">
-                <div class="flow-row"><div class="flow-node">start → scada data</div></div>
+                <div class="flow-row"><div class="flow-node">🚀 START → SCADA DATA</div></div>
                 <div class="arrow-symbol">▼</div>
-                <div class="flow-row"><div class="flow-node">hybrid router</div></div>
-                <div class="split-flow"><div class="flow-node">sql insert</div><div class="flow-node">mongodb insert</div></div>
+                <div class="flow-row"><div class="flow-node">🔄 HYBRID ROUTER</div></div>
+                <div class="split-flow"><div class="flow-node">📥 SQL INSERT</div><div class="flow-node">📥 MONGODB INSERT</div></div>
                 <div class="arrow-symbol">▼</div>
-                <div class="flow-row"><div class="flow-node">query & analytics engine</div></div>
+                <div class="flow-row"><div class="flow-node">⚙️ QUERY & ANALYTICS ENGINE</div></div>
                 <div class="arrow-symbol">▼</div>
-                <div class="split-flow"><div class="flow-node">oee / risk</div><div class="flow-node">dashboard render</div></div>
+                <div class="split-flow"><div class="flow-node">📊 OEE / RISK</div><div class="flow-node">🖥️ DASHBOARD RENDER</div></div>
                 <div class="arrow-symbol">▼</div>
-                <div class="flow-row"><div class="flow-node">manual override → push to DBs</div></div>
+                <div class="flow-row"><div class="flow-node">🖱️ MANUAL OVERRIDE → PUSH TO DBS</div></div>
                 <div class="arrow-symbol">▼</div>
-                <div class="flow-row"><div class="flow-node">end / loop</div></div>
+                <div class="flow-row"><div class="flow-node">🔄 END / LOOP</div></div>
             </div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 09: ALGORITHM
-         Explains: Exact pseudocode/logical steps
-         Shows SQL query, MongoDB document structure, OEE formula, risk calculation
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">09</span>
-            <h2>algorithm</h2>
+            <h2>ALGORITHM</h2>
         </div>
         <div class="section-content">
             <div class="card-soft" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;">
-                1. capture (CoreTemp, VibNoise, OilPressure, GoodUnits, Scrap)<br>
+                1. CAPTURE (CoreTemp, VibNoise, OilPressure, GoodUnits, Scrap)<br>
                 2. SQL: INSERT INTO production_history (good_units, piston_pressure, scrap_units)<br>
-                3. MongoDB: build { timestamp, component, drift, active_alarm } → fault_logs<br>
+                3. MONGODB: build { timestamp, component, drift, active_alarm } → fault_logs<br>
                 4. OEE = total_good / (total_good + total_scrap) * 100<br>
-                5. risk = f(fault_freq, scrap_trend, pressure_var) → 37%<br>
-                6. cutoff = MTBF extrapolation → ~140 hrs<br>
-                7. active_alarms = count(active == true)<br>
-                8. refresh dashboard
+                5. RISK = f(fault_freq, scrap_trend, pressure_var) → <strong class="highlight-number">37%</strong><br>
+                6. CUTOFF = MTBF extrapolation → <strong class="highlight-number">~140 hrs</strong><br>
+                7. ACTIVE_ALARMS = count(active == true) → <strong class="highlight-number">4</strong><br>
+                8. REFRESH DASHBOARD
             </div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 10: RESULTS AND DISCUSSION
-         Explains: Actual measured outcomes from deployed system
-         Table shows: 18 SQL rows, 7 MongoDB docs, 4 active alarms, 98.52% OEE, etc.
-         Discussion interprets what these numbers mean
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">10</span>
-            <h2>results & discussion</h2>
+            <h2>RESULTS & DISCUSSION</h2>
         </div>
         <div class="section-content">
             <table class="results-table">
-                <thead><tr><th>metric</th><th>value</th><th>threshold</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>METRIC</th>
+                        <th>VALUE</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td>total relational logs</td><td class="kpi-highlight">18 rows</td><td>✔ active</td></tr>
-                    <tr><td>total document logs</td><td class="kpi-highlight">7 docs</td><td>✔ active</td></tr>
-                    <tr><td>active alarms (BSON)</td><td class="kpi-highlight">4 active</td><td>⚠️ monitor</td></tr>
-                    <tr><td>global OEE index</td><td class="kpi-highlight">98.52%</td><td>✅ compliant</td></tr>
-                    <tr><td>breakdown risk</td><td class="kpi-highlight">37%</td><td>🟢 stable</td></tr>
-                    <tr><td>cutoff window</td><td class="kpi-highlight">~140 hrs</td><td>🟡 watch</td></tr>
-                    <tr><td>waste factor</td><td class="kpi-highlight">2.7% scrap</td><td>✅ acceptable</td></tr>
+                    <tr><td>TOTAL RELATIONAL LOGS</td><td class="kpi-highlight">18 ROWS</td><td>✅ ACTIVE</td></tr>
+                    <tr><td>TOTAL DOCUMENT LOGS</td><td class="kpi-highlight">7 DOCS</td><td>✅ ACTIVE</td></tr>
+                    <tr><td>ACTIVE ALARMS (BSON)</td><td class="kpi-highlight">4 ACTIVE</td><td>⚠️ MONITOR</td></tr>
+                    <tr><td>GLOBAL OEE INDEX</td><td class="kpi-highlight">98.52%</td><td>✅ COMPLIANT</td></tr>
+                    <tr><td>BREAKDOWN RISK</td><td class="kpi-highlight">37%</td><td>🟢 STABLE</td></tr>
+                    <tr><td>CUTOFF WINDOW</td><td class="kpi-highlight">~140 HRS</td><td>🟡 WATCH</td></tr>
+                    <tr><td>WASTE FACTOR</td><td class="kpi-highlight">2.7% SCRAP</td><td>✅ ACCEPTABLE</td></tr>
                 </tbody>
             </table>
             <div class="note-quote">
-                <span>💬</span> The hybrid design keeps shift audit trail in SQL while fault patterns remain fully queryable in MongoDB. With 98.5% OEE but 37% breakdown risk, the system recommends inspection within 140h — actionable insight from combined storage.
+                <span>💬</span> <strong>DISCUSSION:</strong> The hybrid design keeps shift audit trail in SQL while fault patterns remain fully queryable in MongoDB. With <strong class="highlight-number">98.52% OEE</strong> but <strong class="highlight-number">37% breakdown risk</strong>, the system recommends inspection within <strong class="highlight-number">140 hours</strong> — actionable insight from combined storage.
             </div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 11: APPLICATIONS
-         Explains: Real-world use cases for this system
-         Each application is a specific scenario with value
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">11</span>
-            <h2>applications</h2>
+            <h2>APPLICATIONS</h2>
         </div>
         <div class="section-content">
             <div class="grid-2col">
-                <div class="app-item">🏭 SCADA augmentation & PLC log enrichment</div>
-                <div class="app-item">🔧 predictive maintenance from fault patterns</div>
-                <div class="app-item">📊 real-time OEE dashboards for shop floors</div>
-                <div class="app-item">📜 tamper-proof SQL audit + flexible forensic logs</div>
+                <div class="app-item">🏭 <strong>SCADA AUGMENTATION</strong> & PLC log enrichment</div>
+                <div class="app-item">🔧 <strong>PREDICTIVE MAINTENANCE</strong> from fault patterns</div>
+                <div class="app-item">📊 <strong>REAL-TIME OEE DASHBOARDS</strong> for shop floors</div>
+                <div class="app-item">📜 <strong>TAMPER-PROOF SQL AUDIT</strong> + flexible forensic logs</div>
             </div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 12: FUTURE SCOPE
-         Explains: Potential improvements and extensions
-         Shows forward-thinking and project scalability
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">12</span>
-            <h2>future scope</h2>
+            <h2>FUTURE SCOPE</h2>
         </div>
         <div class="section-content">
             <div class="grid-2col">
-                <div class="future-chip">ML classification of fault types from MongoDB logs</div>
-                <div class="future-chip">anomaly detection on real-time sensor streams</div>
-                <div class="future-chip">multi‑factory roll‑out (Düsseldorf cluster)</div>
-                <div class="future-chip">Kafka streaming for low‑latency hybrid ingestion</div>
-                <div class="future-chip">progressive web app for mobile downtime alerts</div>
+                <div class="future-chip">🤖 <strong>ML CLASSIFICATION</strong> of fault types from MongoDB logs</div>
+                <div class="future-chip">⚡ <strong>REAL-TIME ANOMALY DETECTION</strong> on sensor streams</div>
+                <div class="future-chip">🌍 <strong>MULTI-FACTORY ROLL-OUT</strong> (Düsseldorf cluster)</div>
+                <div class="future-chip">📡 <strong>KAFKA STREAMING</strong> for low‑latency hybrid ingestion</div>
+                <div class="future-chip">📱 <strong>PROGRESSIVE WEB APP</strong> for mobile downtime alerts</div>
             </div>
         </div>
     </div>
 
     <!-- ============================================
          SECTION 13: CONCLUSION
-         Explains: Final summary of achievements
-         Recaps key metrics and confirms objectives met
-         Links to live dashboard for verification
          ============================================ -->
     <div class="section fade-on-scroll">
         <div class="section-header">
             <span class="section-num">13</span>
-            <h2>conclusion</h2>
+            <h2>CONCLUSION</h2>
         </div>
         <div class="section-content">
             <div class="card-soft" style="background: #0e0e16;">
-                <p style="margin-bottom: 0.8rem;">The <strong>hybrid SQL–MongoDB monitor</strong> is operational, proving that structured production logs and semi‑structured fault telemetry can coexist without trade‑offs. With 98.52% OEE, live manual override, and a downtime forecast window of ~140h, the system delivers industrial‑grade analytics. This portfolio aligns with the <strong>Data Management & Analysis</strong> course and the Automation & Robotics curriculum.</p>
-                <div style="font-size: 0.75rem; color: var(--cyan-dim);">Live dashboard: <a href="https://production-management-seven.vercel.app" target="_blank" style="text-decoration: underline;">production-management-seven.vercel.app</a></div>
+                <p style="margin-bottom: 0.8rem;">The <strong>HYBRID SQL–MONGODB MONITOR</strong> is operational, proving that structured production logs and semi‑structured fault telemetry can coexist without trade‑offs. With <strong class="highlight-number">98.52% OEE</strong>, live manual override, and a downtime forecast window of <strong class="highlight-number">~140 hours</strong>, the system delivers industrial‑grade analytics. This portfolio aligns with the <strong>DATA MANAGEMENT & ANALYSIS</strong> course and the <strong>AUTOMATION & ROBOTICS</strong> curriculum.</p>
+                <div style="font-size: 0.75rem; color: var(--cyan-dim);">🔗 LIVE DASHBOARD: <a href="https://production-management-seven.vercel.app" target="_blank" style="text-decoration: underline;">PRODUCTION-MANAGEMENT-SEVEN.VERCEL.APP</a></div>
             </div>
         </div>
     </div>
 
-    <!-- ============================================
-         FOOTER
-         Explains: Project metadata, copyright, and attribution
-         ============================================ -->
+    <!-- FOOTER -->
     <div class="footer">
-        <span>Srushti G Joshi · automation & robotics</span>
-        <span>data management & analysis · 01FE24BAR014</span>
-        <span>hybrid system · 2026</span>
+        <span>👩‍🎓 SRUSHTI G JOSHI · AUTOMATION & ROBOTICS</span>
+        <span>📊 DATA MANAGEMENT & ANALYSIS · 01FE24BAR014</span>
+        <span>🏭 HYBRID SYSTEM · 2026</span>
     </div>
 </div>
 
 <script>
-    /* ============================================
-       SCROLL REVEAL ANIMATION
-       When elements with class 'fade-on-scroll' enter the viewport,
-       they get class 'visible' which triggers the fade-in.
-       Creates a pleasant reading rhythm without being distracting.
-       ============================================ */
+    /* SCROLL REVEAL ANIMATION */
     const fadeElements = document.querySelectorAll('.fade-on-scroll');
     
     function checkVisibility() {
         for (let el of fadeElements) {
             const rect = el.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            // Element becomes visible when it's 80px from viewport bottom
             if (rect.top < windowHeight - 80) {
                 el.classList.add('visible');
             }
         }
     }
     
-    // Run on scroll, resize, and initial load
     window.addEventListener('scroll', checkVisibility);
     window.addEventListener('resize', checkVisibility);
     checkVisibility();
