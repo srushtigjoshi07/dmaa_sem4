@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid SQL-MongoDB Production Monitor | Srushti G Joshi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e4ff;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1f3a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 5px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #00ffaa;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .student-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .student-info span {
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .student-info strong {
+            color: #00ffff;
+        }
+
+        /* Section Styles */
+        .section {
+            background: rgba(15, 20, 40, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+            border-color: rgba(0, 255, 255, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00ffff;
+            display: inline-block;
+            color: #00ffff;
+        }
+
+        .section-content {
+            margin-top: 20px;
+        }
+
+        /* Block Diagram */
+        .block-diagram {
+            background: #0a0e22;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .diagram-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .diagram-box {
+            background: linear-gradient(135deg, #1a1f3a, #0a0e22);
+            border: 2px solid #00ffff;
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin: 10px;
+            min-width: 180px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .diagram-arrow {
+            font-size: 2rem;
+            color: #00ffff;
+            margin: 0 10px;
+        }
+
+        .diagram-split {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .db-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #ff00ff;
+            border-radius: 12px;
+            padding: 15px 30px;
+        }
+
+        /* Software Grid */
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .software-item {
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        /* Methodology Steps */
+        .methodology-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #00ffff;
+            padding: 15px 20px;
+            border-radius: 10px;
+        }
+
+        .step-number {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        /* Flowchart */
+        .flowchart {
+            background: #0a0e22;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .flow-node {
+            background: linear-gradient(135deg, #1a1f3a, #0a0e22);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin: 10px auto;
+            display: inline-block;
+            min-width: 250px;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #00ffff;
+            margin: 5px 0;
+        }
+
+        /* Algorithm */
+        .algorithm {
+            background: #0a0e22;
+            border-radius: 15px;
+            padding: 25px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .algorithm ol {
+            margin-left: 25px;
+        }
+
+        .algorithm li {
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        /* Results Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #2a2e4a;
+        }
+
+        .results-table th {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+        }
+
+        .kpi-highlight {
+            color: #00ffaa;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Applications Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .app-card {
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .app-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Future Scope */
+        .future-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .future-item {
+            background: rgba(255, 0, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 3px solid #ff00ff;
+        }
+
+        /* Conclusion */
+        .conclusion-box {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #00ffff;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .section-title {
+                font-size: 1.4rem;
+            }
+            .diagram-arrow {
+                display: block;
+                margin: 5px 0;
+                transform: rotate(90deg);
+            }
+            .diagram-split {
+                flex-direction: column;
+                align-items: center;
+            }
+            .student-info {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        /* Code Block */
+        code {
+            background: #0a0e22;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: #00ffaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Student Details -->
+        <div class="header">
+            <h1>🏭 Hybrid SQL–MongoDB Production Monitoring System</h1>
+            <div class="subtitle">Industrial Analytics & Downtime Prediction Platform</div>
+            <div class="student-info">
+                <span>👩‍🎓 <strong>Name:</strong> Srushti G Joshi</span>
+                <span>🏛️ <strong>Department:</strong> Automation and Robotics</span>
+                <span>📚 <strong>Course:</strong> Data Management and Analysis</span>
+                <span>🆔 <strong>USN:</strong> 01FE24BAR014</span>
+            </div>
+        </div>
+
+        <!-- 1. Title -->
+        <div class="section">
+            <h2 class="section-title">📌 1. Title</h2>
+            <div class="section-content">
+                <p style="font-size: 1.3rem; font-weight: bold; text-align: center; color: #00ffaa;">
+                    "Hybrid Telemetry Harvester: A SQL–MongoDB Production Monitoring System for Industrial Analytics and Downtime Prediction"
+                </p>
+            </div>
+        </div>
+
+        <!-- 2. Abstract -->
+        <div class="section">
+            <h2 class="section-title">📄 2. Abstract</h2>
+            <div class="section-content">
+                <p>This project presents a <strong>dual-database architecture</strong> for production monitoring. Structured machine production data (shift outputs, good/scrap units, pressure metrics) is stored in a <strong>relational SQL database</strong>, while real-time sensor fault logs and schemaless telemetry drift signals are ingested into <strong>MongoDB</strong>. A web-based dashboard visualizes key performance indicators (KPIs), live sensor telemetry, and downtime forecasts. The system enables industrial analytics, active alarm tracking, and breakdown risk assessment, achieving a <strong>Global OEE Index of 98.52%</strong> in the deployed prototype.</p>
+            </div>
+        </div>
+
+        <!-- 3. Problem Statement -->
+        <div class="section">
+            <h2 class="section-title">⚠️ 3. Problem Statement</h2>
+            <div class="section-content">
+                <p>Modern industrial environments generate <strong>heterogeneous data</strong>: structured shift reports and semi-structured sensor fault logs. Storing both in a single database type leads to inefficiency—relational systems struggle with variable schemas (fault signatures), while document stores lack robust aggregation for production metrics.</p>
+                <br>
+                <p><strong>Key Challenges:</strong></p>
+                <ul style="margin-left: 30px; margin-top: 10px;">
+                    <li>Store <strong>structured production history</strong> in SQL (good units, scrap, piston pressure)</li>
+                    <li>Store <strong>real-time sensor fault logs</strong> in MongoDB (variable fields, component-wise alerts)</li>
+                    <li>Provide a unified dashboard for <strong>downtime prediction</strong> and <strong>operational visibility</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. Objectives -->
+        <div class="section">
+            <h2 class="section-title">🎯 4. Objectives</h2>
+            <div class="section-content">
+                <ul style="margin-left: 25px;">
+                    <li>Design and implement a <strong>dual-database connector</strong> that routes SCADA telemetry to SQL and MongoDB</li>
+                    <li>Build a <strong>web dashboard</strong> showing total relational logs, document logs, active alarms, and Global OEE Index</li>
+                    <li>Implement <strong>Downtime Forecast Analyzer</strong> with breakdown risk percentage and cutoff window</li>
+                    <li>Create <strong>Live Sensor Telemetry Rig</strong> with manual override capability</li>
+                    <li>Display <strong>SQL table</strong> (production_history) and <strong>MongoDB collection</strong> (fault_logs)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. Block Diagram -->
+        <div class="section">
+            <h2 class="section-title">📊 5. Block Diagram</h2>
+            <div class="section-content">
+                <div class="block-diagram">
+                    <div class="diagram-row">
+                        <div class="diagram-box">🏭 SCADA Telemetry Sources</div>
+                    </div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="diagram-row">
+                        <div class="diagram-box">🔄 Hybrid Data Router</div>
+                    </div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="diagram-split">
+                        <div class="db-box">🗄️ SQL Database<br><small>production_history</small></div>
+                        <div class="db-box">📄 MongoDB<br><small>fault_logs (schemaless)</small></div>
+                    </div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="diagram-row">
+                        <div class="diagram-box">📊 Web Dashboard - KPIs & Visualizations</div>
+                    </div>
+                    <div class="diagram-split">
+                        <div class="db-box" style="border-color: #00ffaa;">📈 Global OEE Index</div>
+                        <div class="db-box" style="border-color: #ffaa00;">🔮 Downtime Forecast</div>
+                        <div class="db-box" style="border-color: #ff00ff;">📡 Live Telemetry</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Software Requirements (Replacing Hardware) -->
+        <div class="section">
+            <h2 class="section-title">💻 7. Software Requirements</h2>
+            <div class="section-content">
+                <div class="software-grid">
+                    <div class="software-item">🌐 HTML5 / CSS3 / JavaScript</div>
+                    <div class="software-item">⚛️ React / Vanilla JS</div>
+                    <div class="software-item">🚀 Node.js / Python Flask</div>
+                    <div class="software-item">🐬 MySQL / PostgreSQL</div>
+                    <div class="software-item">🍃 MongoDB Atlas</div>
+                    <div class="software-item">📦 Git & GitHub</div>
+                    <div class="software-item">▲ Vercel (Deployment)</div>
+                    <div class="software-item">🔌 REST API / WebSockets</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Working Methodology -->
+        <div class="section">
+            <h2 class="section-title">⚙️ 8. Working Methodology</h2>
+            <div class="section-content">
+                <div class="methodology-steps">
+                    <div class="step"><span class="step-number">1.</span> <strong>Data Ingestion:</strong> Simulated SCADA clusters generate operational metrics (core temp, vibration noise, oil pressure) and fault signals.</div>
+                    <div class="step"><span class="step-number">2.</span> <strong>Hybrid Routing:</strong> Structured data → SQL (production_history), Unstructured fault logs → MongoDB (fault_logs).</div>
+                    <div class="step"><span class="step-number">3.</span> <strong>Processing:</strong> Dashboard queries both databases in real-time via REST APIs.</div>
+                    <div class="step"><span class="step-number">4.</span> <strong>Analytics:</strong> Global OEE Index computed from good vs. scrap units. Downtime Forecast based on historical fault patterns.</div>
+                    <div class="step"><span class="step-number">5.</span> <strong>Visualization:</strong> Dashboard renders live telemetry gauges, SQL table, MongoDB fault list, and engineering recommendations.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. Flowchart -->
+        <div class="section">
+            <h2 class="section-title">📈 9. Flowchart</h2>
+            <div class="section-content">
+                <div class="flowchart">
+                    <div class="flow-node">🚀 START → SCADA Telemetry Generation</div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="flow-node">🔄 Hybrid Data Router</div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="diagram-split">
+                        <div class="flow-node" style="border-color: #ff00ff;">📥 Insert into SQL<br>production_history</div>
+                        <div class="flow-node" style="border-color: #00ffaa;">📥 Insert into MongoDB<br>fault_logs</div>
+                    </div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="flow-node">📊 Dashboard Query Engine</div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="diagram-split">
+                        <div class="flow-node">📈 OEE</div>
+                        <div class="flow-node">🔮 Downtime Forecast</div>
+                        <div class="flow-node">📡 Live Telemetry</div>
+                    </div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="flow-node">🖱️ User Action: Manual Override → Push to DBs</div>
+                    <div class="flow-arrow">▼</div>
+                    <div class="flow-node">🏁 END Cycle</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Algorithm -->
+        <div class="section">
+            <h2 class="section-title">📝 11. Algorithm</h2>
+            <div class="section-content">
+                <div class="algorithm">
+                    <ol>
+                        <li><strong>SCADA Data Capture:</strong> Read sensor triple (CoreTemp, VibNoise, OilPressure) and shift production values (GoodUnits, ScrapUnits, PistonPressure)</li>
+                        <li><strong>Structured SQL Insert:</strong> <code>INSERT INTO production_history (good_units, piston_pressure_psi, scrap_units) VALUES (good, pressure, scrap);</code></li>
+                        <li><strong>Semi-structured MongoDB Insert:</strong> Construct BSON document with timestamp, component, values, active_alarm flag → Insert into <code>fault_logs</code></li>
+                        <li><strong>OEE Index Calculation:</strong> <code>OEE = (Total Good Units) / (Total Good + Total Scrap) × 100</code></li>
+                        <li><strong>Breakdown Risk Forecast:</strong> <code>Risk% = f(fault_frequency, scrap_trend, pressure_variance)</code> → Output: <strong>37%</strong></li>
+                        <li><strong>Cutoff Window:</strong> Based on MTBF extrapolation → <strong>~140 hours</strong></li>
+                        <li><strong>Active Alarm Monitor:</strong> Count documents where <code>active_alarm == true</code></li>
+                        <li><strong>Dashboard Refresh:</strong> Update KPI cards, render SQL table, list MongoDB fault logs</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Results and Discussion -->
+        <div class="section">
+            <h2 class="section-title">📊 12. Results and Discussion</h2>
+            <div class="section-content">
+                <table class="results-table">
+                    <thead>
+                        <tr><th>KPI / Metric</th><th>Value</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Total Relational Logs</td><td class="kpi-highlight">18 Rows</td><td>✅ Active</td></tr>
+                        <tr><td>Total Document Logs</td><td class="kpi-highlight">7 Documents</td><td>✅ Active</td></tr>
+                        <tr><td>Active Alarms (BSON)</td><td class="kpi-highlight">4 Active</td><td>⚠️ Attention</td></tr>
+                        <tr><td>Global OEE Index</td><td class="kpi-highlight">98.52%</td><td>✅ Compliant</td></tr>
+                        <tr><td>Breakdown Risk</td><td class="kpi-highlight">37%</td><td>🟢 Stable</td></tr>
+                        <tr><td>Cutoff Window</td><td class="kpi-highlight">~140 hrs</td><td>🟡 Monitor</td></tr>
+                        <tr><td>Waste Factor</td><td class="kpi-highlight">2.7%</td><td>✅ Acceptable</td></tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,255,0.05); border-radius: 10px;">
+                    <p><strong>📌 Discussion:</strong> The hybrid system successfully separates structured shift data from unstructured fault telemetry. The OEE of 98.52% indicates high efficiency, but the 37% breakdown risk and 2.7% scrap factor suggest predictive maintenance is needed within ~140 hours. The MongoDB fault logs provide rich, queryable context for root cause analysis.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Applications -->
+        <div class="section">
+            <h2 class="section-title">🏭 13. Applications</h2>
+            <div class="section-content">
+                <div class="apps-grid">
+                    <div class="app-card"><div class="app-icon">🏭</div><strong>Factory SCADA Integration</strong><br><small>Supplement existing PLC logs with hybrid storage</small></div>
+                    <div class="app-card"><div class="app-icon">🔧</div><strong>Predictive Maintenance</strong><br><small>Use MongoDB fault patterns to forecast downtime</small></div>
+                    <div class="app-card"><div class="app-icon">📊</div><strong>OEE Dashboards</strong><br><small>Real-time visibility for shop floor managers</small></div>
+                    <div class="app-card"><div class="app-icon">📜</div><strong>Regulatory Compliance</strong><br><small>Tamper-proof SQL audit trail of production shifts</small></div>
+                    <div class="app-card"><div class="app-icon">⚡</div><strong>Stress Testing</strong><br><small>Manual override mode to simulate extreme parameters</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 14. Future Scope -->
+        <div class="section">
+            <h2 class="section-title">🚀 14. Future Scope</h2>
+            <div class="section-content">
+                <div class="future-list">
+                    <div class="future-item">🤖 <strong>Machine Learning on MongoDB logs</strong> – Auto-classify fault types (electric, mechanical, drift)</div>
+                    <div class="future-item">⚡ <strong>Real-time anomaly detection</strong> – Trigger alerts when sensor values deviate from historical baselines</div>
+                    <div class="future-item">🌍 <strong>Multi-factory aggregation</strong> – Deploy across DUSSELDORF and other clusters</div>
+                    <div class="future-item">📡 <strong>Apache Kafka integration</strong> – Stream SCADA data directly into both databases</div>
+                    <div class="future-item">📱 <strong>Mobile PWA</strong> – View downtime forecast and active alarms on handheld devices</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 15. Conclusion -->
+        <div class="section">
+            <h2 class="section-title">✅ 15. Conclusion</h2>
+            <div class="section-content">
+                <div class="conclusion-box">
+                    <p style="font-size: 1.1rem;">The <strong>Hybrid SQL–MongoDB Production Monitoring System</strong> was successfully designed and implemented, achieving:</p>
+                    <br>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 15px 0;">
+                        <span class="badge">📊 Structured SQL storage</span>
+                        <span class="badge">📄 Flexible MongoDB fault logs</span>
+                        <span class="badge">📈 Real-time OEE: 98.52%</span>
+                        <span class="badge">🔮 Breakdown risk: 37%</span>
+                        <span class="badge">⏱️ Cutoff window: ~140 hrs</span>
+                    </div>
+                    <p>This portfolio demonstrates a <strong>production-ready solution</strong> for industrial analytics and downtime prediction, fully aligned with the objectives of the <strong>Data Management and Analysis</strong> course in <strong>Automation and Robotics</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📌 Hybrid SQL-MongoDB Production Monitoring System | Data Management & Analysis | Dept. of Automation & Robotics</p>
+            <p>👩‍🎓 Srushti G Joshi | USN: 01FE24BAR014</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">🔗 Live Dashboard: <a href="https://production-management-seven.vercel.app" target="_blank" style="color: #00ffff;">production-management-seven.vercel.app</a></p>
+        </div>
+    </div>
+</body>
+</html>
